@@ -4,7 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Not Kartı</title>
-<meta name="theme-color" content="#ffe45c">
+<meta name="theme-color" content="#f4f5f7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0f1115" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Not Kartı">
@@ -14,63 +15,128 @@
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="stylesheet" href="style.css">
 </head>
-<body data-tab="calis">
-<header>
-  <div class="brand"><img src="icons/icon-192.png" alt="" width="34" height="34">Not Kartı</div>
-  <nav class="tabs" role="tablist">
-    <button role="tab" id="tab-calis" aria-selected="true" data-tab="calis">Çalış</button>
-    <button role="tab" id="tab-kartlar" aria-selected="false" data-tab="kartlar">Kartlar</button>
+<body data-view="calis">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-calis" viewBox="0 0 24 24"><rect x="3" y="6" width="14" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M7 3h11a3 3 0 0 1 3 3v11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-kartlar" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-ekle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-ayarlar" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-geri" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-ok" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-cevir" viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3M18 3v4h-4M6 21v-4h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<aside class="side">
+  <div class="logo"><img src="icons/icon-192.png" alt="" width="36" height="36"><span>Not Kartı</span></div>
+  <nav class="nav" aria-label="Bölümler">
+    <button data-go="calis"><svg><use href="#i-calis"/></svg>Çalış</button>
+    <button data-go="kartlar"><svg><use href="#i-kartlar"/></svg>Kartlar</button>
+    <button data-go="ekle"><svg><use href="#i-ekle"/></svg>Kart ekle</button>
+    <button data-go="ayarlar"><svg><use href="#i-ayarlar"/></svg>Ayarlar</button>
   </nav>
-  <div class="sync" id="sync"><i></i><span>Bağlanıyor…</span></div>
-</header>
-<div class="update" id="update" hidden><span>Yeni sürüm hazır.</span><button id="update-btn">Şimdi güncelle</button></div>
+  <div class="side-foot"><div class="sync"><i></i><span>Bağlanıyor…</span></div></div>
+</aside>
 
-<main>
-<section id="calis" aria-label="Çalışma">
-  <div class="row">
-    <div class="sel"><label for="s-ders">Ders</label><select id="s-ders"></select></div>
-    <div class="sel"><label for="s-konu">Konu</label><select id="s-konu"></select></div>
-  </div>
-  <div class="row" style="margin-top:10px">
-    <div class="seg" id="s-mod" role="group" aria-label="Hangi kartlar">
-      <button data-mod="hepsi" aria-pressed="true">Hepsi</button>
-      <button data-mod="ogrenilmemis" aria-pressed="false">Öğrenilmemiş</button>
-      <button data-mod="bilmiyorum" aria-pressed="false">Bilmediklerim</button>
-    </div>
-    <label class="chk"><input type="checkbox" id="s-kar" checked> Karıştır</label>
-    <button class="btn ghost" id="s-restart">Baştan başla</button>
-  </div>
-  <div id="stage"></div>
-</section>
+<div class="main">
+  <div class="update" id="update" hidden><span>Yeni sürüm hazır.</span><button id="update-btn">Şimdi güncelle</button></div>
 
-<aside id="kartlar" aria-label="Kartları yönet">
-  <div class="panel">
-    <h2 id="f-title">Kart ekle</h2>
-    <form id="form" autocomplete="off">
-      <div class="grid2 f">
-        <div><label for="f-ders">Ders</label><input id="f-ders" list="dl-ders" required placeholder="Coğrafya"></div>
-        <div><label for="f-konu">Konu</label><input id="f-konu" list="dl-konu" placeholder="Karst şekilleri"></div>
+  <!-- ÇALIŞ -->
+  <section class="view" data-v="calis">
+    <div id="setup">
+      <header class="head"><h1>Çalış</h1><div class="sync m"><i></i><span></span></div></header>
+      <div class="panel">
+        <h2>Ders</h2>
+        <div class="chips" id="c-ders"></div>
+        <h2 class="mt">Konu</h2>
+        <div class="chips" id="c-konu"></div>
       </div>
-      <div class="f"><label for="f-on">Ön yüz (kavram)</label><input id="f-on" placeholder="Obruk"></div>
-      <div class="f"><label>Ön yüz resmi (isteğe bağlı)</label>
-        <div class="imgpick"><img id="f-prev" alt="" hidden><div class="row" style="flex:1">
-          <label class="btn pick" for="f-img">Galeriden seç</label><input id="f-img" type="file" accept="image/*" class="vh">
-          <label class="btn pick" for="f-cam">Fotoğraf çek</label><input id="f-cam" type="file" accept="image/*" capture="environment" class="vh">
-          <button class="btn ghost" id="f-imgdel" type="button" hidden>Resmi kaldır</button></div></div>
-        <p class="note">Bilgisayarda resmi kopyalayıp bu formda Ctrl+V ile de yapıştırabilirsiniz.</p></div>
-      <div class="f"><label for="f-arka">Arka yüz (tanım)</label><textarea id="f-arka" required placeholder="Kalker arazide yer altındaki boşlukların tavanının çökmesiyle oluşan derin, dik kenarlı çukur."></textarea></div>
-      <div class="row"><button class="btn pri" id="f-save" type="submit">Kartı ekle</button><button class="btn ghost" id="f-cancel" type="button" hidden>Vazgeç</button></div>
+      <div class="stats" id="stats"></div>
+      <div class="panel">
+        <h2>Çalışma şekli</h2>
+        <div class="field"><span class="flabel">Kartın ön yüzü</span>
+          <div class="seg" id="s-yon"><button data-yon="kt">Kelime → Tanım</button><button data-yon="tk">Tanım → Kelime</button></div></div>
+        <div class="field"><span class="flabel">Hangi kartlar</span>
+          <div class="seg" id="s-mod"><button data-mod="hepsi">Hepsi</button><button data-mod="ogrenilmemis">Öğrenilmemiş</button><button data-mod="bilmiyorum">Bilmediklerim</button></div></div>
+        <label class="switch"><span>Kartları karıştır</span><input type="checkbox" id="s-kar"><i></i></label>
+      </div>
+      <button class="btn pri big" id="start"></button>
+    </div>
+
+    <div id="study" hidden>
+      <div class="studybar">
+        <button class="iconbtn" id="exit" aria-label="Çalışmayı bitir"><svg><use href="#i-geri"/></svg></button>
+        <div class="sb-mid"><span id="sb-title"></span><div class="bar"><b id="sb-bar"></b></div></div>
+        <span class="sb-count" id="sb-count"></span>
+      </div>
+      <div id="stage"></div>
+    </div>
+  </section>
+
+  <!-- KARTLAR -->
+  <section class="view" data-v="kartlar">
+    <header class="head"><button class="iconbtn" id="b-back" hidden aria-label="Geri"><svg><use href="#i-geri"/></svg></button><h1 id="b-title">Kartlar</h1><button class="btn pri sm" data-go="ekle">Kart ekle</button></header>
+    <input id="q" class="search" type="search" placeholder="Kartlarda ara" aria-label="Kartlarda ara">
+    <div id="browse"></div>
+  </section>
+
+  <!-- EKLE -->
+  <section class="view" data-v="ekle">
+    <header class="head"><button class="iconbtn" id="f-back" hidden aria-label="Geri"><svg><use href="#i-geri"/></svg></button><h1 id="f-title">Kart ekle</h1></header>
+    <form id="form" autocomplete="off">
+      <div class="panel">
+        <h2>Yeri</h2>
+        <div class="grid2">
+          <div><label for="f-ders">Ders</label><input id="f-ders" list="dl-ders" required placeholder="Örn. Gelişim Psikolojisi"></div>
+          <div><label for="f-konu">Konu</label><input id="f-konu" list="dl-konu" placeholder="Örn. Bilişsel gelişim"></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>Kelime</h2>
+        <label for="f-on">Kavram</label><input id="f-on" placeholder="Örn. Obruk">
+        <label class="mt">Resim (isteğe bağlı)</label>
+        <div class="imgpick"><div class="prev" id="f-prevbox" hidden><img id="f-prev" alt=""><button type="button" id="f-imgdel" aria-label="Resmi kaldır">×</button></div>
+          <div class="row"><label class="btn pick" for="f-img">Galeriden seç</label><input id="f-img" type="file" accept="image/*" class="vh">
+          <label class="btn pick" for="f-cam">Fotoğraf çek</label><input id="f-cam" type="file" accept="image/*" capture="environment" class="vh"></div></div>
+        <p class="note">Bilgisayarda resmi kopyalayıp burada Ctrl+V ile yapıştırabilirsiniz.</p>
+      </div>
+      <div class="panel">
+        <h2>Tanım</h2>
+        <label for="f-arka">Açıklama</label><textarea id="f-arka" required rows="4" placeholder="Örn. Kalker arazide yer altındaki boşlukların tavanının çökmesiyle oluşan derin çukur."></textarea>
+      </div>
+      <div class="formacts"><button class="btn pri big" id="f-save" type="submit">Kartı ekle</button><button class="btn ghost" id="f-cancel" type="button" hidden>Vazgeç</button></div>
     </form>
     <datalist id="dl-ders"></datalist><datalist id="dl-konu"></datalist>
-    <div class="list">
-      <input id="q" type="search" placeholder="Kartlarda ara" aria-label="Kartlarda ara">
-      <div class="legend"><span><i class="dot"></i>Yeni</span><span><i class="dot biliyorum"></i>Biliyorum</span><span><i class="dot bilmiyorum"></i>Bilmiyorum</span></div>
-      <div id="list"></div>
+  </section>
+
+  <!-- AYARLAR -->
+  <section class="view" data-v="ayarlar">
+    <header class="head"><h1>Ayarlar</h1></header>
+    <div class="panel">
+      <h2>Uygulama</h2>
+      <div class="kv"><span>Sürüm</span><b id="ver"></b></div>
+      <div class="kv"><span>Eşitleme</span><b class="sync inline"><i></i><span></span></b></div>
+      <div class="kv"><span>Toplam kart</span><b id="total"></b></div>
+      <button class="btn wide" id="check">Güncellemeleri denetle</button>
     </div>
-  </div>
-  <div class="about"><span id="ver"></span><button class="btn" id="check">Güncellemeleri denetle</button></div>
-</aside>
-</main>
+    <div class="panel">
+      <h2>İlerleme</h2>
+      <p class="muted">Bütün kartları "yeni" durumuna getirir. Kartlar silinmez.</p>
+      <button class="btn wide danger" id="resetall">Tüm ilerlemeyi sıfırla</button>
+    </div>
+    <div class="panel">
+      <h2>Kurulum</h2>
+      <p class="muted"><b>iPhone / iPad:</b> Safari'de Paylaş → Ana Ekrana Ekle.<br><b>Mac:</b> Safari'de Dosya → Dock'a Ekle.<br><b>Windows:</b> Chrome ya da Edge'de adres çubuğundaki yükle simgesi.</p>
+    </div>
+  </section>
+</div>
+
+<nav class="tabbar" aria-label="Bölümler">
+  <button data-go="calis"><svg><use href="#i-calis"/></svg>Çalış</button>
+  <button data-go="kartlar"><svg><use href="#i-kartlar"/></svg>Kartlar</button>
+  <button data-go="ekle"><svg><use href="#i-ekle"/></svg>Ekle</button>
+  <button data-go="ayarlar"><svg><use href="#i-ayarlar"/></svg>Ayarlar</button>
+</nav>
+
 <div class="toast" id="toast" role="status"><span id="toast-t"></span><button id="toast-b" hidden>Geri al</button></div>
 
 <script src="vendor/supabase.js"></script>

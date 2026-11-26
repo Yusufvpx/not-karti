@@ -1,6 +1,6 @@
 // Not Kartı servis çalışanı: uygulama dosyalarını internetten taze alır,
 // internet yoksa kayıtlı kopyayı kullanır. Kart resimlerini saklar.
-const SHELL = 'nk-shell-v1';
+const SHELL = 'nk-shell-v2';
 const IMAGES = 'nk-images-v1';
 const FILES = ['./', 'index.html', 'style.css', 'app.js', 'config.js', 'vendor/supabase.js',
   'manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png'];
