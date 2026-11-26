@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Not Kartı</title>
+<meta name="theme-color" content="#ffe45c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Not Kartı">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-tab="calis">
+<header>
+  <div class="brand"><img src="icons/icon-192.png" alt="" width="34" height="34">Not Kartı</div>
+  <nav class="tabs" role="tablist">
+    <button role="tab" id="tab-calis" aria-selected="true" data-tab="calis">Çalış</button>
+    <button role="tab" id="tab-kartlar" aria-selected="false" data-tab="kartlar">Kartlar</button>
+  </nav>
+  <div class="sync" id="sync"><i></i><span>Bağlanıyor…</span></div>
+</header>
+<div class="update" id="update" hidden><span>Yeni sürüm hazır.</span><button id="update-btn">Şimdi güncelle</button></div>
+
+<main>
+<section id="calis" aria-label="Çalışma">
+  <div class="row">
+    <div class="sel"><label for="s-ders">Ders</label><select id="s-ders"></select></div>
+    <div class="sel"><label for="s-konu">Konu</label><select id="s-konu"></select></div>
+  </div>
+  <div class="row" style="margin-top:10px">
+    <div class="seg" id="s-mod" role="group" aria-label="Hangi kartlar">
+      <button data-mod="hepsi" aria-pressed="true">Hepsi</button>
+      <button data-mod="ogrenilmemis" aria-pressed="false">Öğrenilmemiş</button>
+      <button data-mod="bilmiyorum" aria-pressed="false">Bilmediklerim</button>
+    </div>
+    <label class="chk"><input type="checkbox" id="s-kar" checked> Karıştır</label>
+    <button class="btn ghost" id="s-restart">Baştan başla</button>
+  </div>
+  <div id="stage"></div>
+</section>
+
+<aside id="kartlar" aria-label="Kartları yönet">
+  <div class="panel">
+    <h2 id="f-title">Kart ekle</h2>
+    <form id="form" autocomplete="off">
+      <div class="grid2 f">
+        <div><label for="f-ders">Ders</label><input id="f-ders" list="dl-ders" required placeholder="Coğrafya"></div>
+        <div><label for="f-konu">Konu</label><input id="f-konu" list="dl-konu" placeholder="Karst şekilleri"></div>
+      </div>
+      <div class="f"><label for="f-on">Ön yüz (kavram)</label><input id="f-on" placeholder="Obruk"></div>
+      <div class="f"><label>Ön yüz resmi (isteğe bağlı)</label>
+        <div class="imgpick"><img id="f-prev" alt="" hidden><div class="row" style="flex:1">
+          <label class="btn pick" for="f-img">Galeriden seç</label><input id="f-img" type="file" accept="image/*" class="vh">
+          <label class="btn pick" for="f-cam">Fotoğraf çek</label><input id="f-cam" type="file" accept="image/*" capture="environment" class="vh">
+          <button class="btn ghost" id="f-imgdel" type="button" hidden>Resmi kaldır</button></div></div>
+        <p class="note">Bilgisayarda resmi kopyalayıp bu formda Ctrl+V ile de yapıştırabilirsiniz.</p></div>
+      <div class="f"><label for="f-arka">Arka yüz (tanım)</label><textarea id="f-arka" required placeholder="Kalker arazide yer altındaki boşlukların tavanının çökmesiyle oluşan derin, dik kenarlı çukur."></textarea></div>
+      <div class="row"><button class="btn pri" id="f-save" type="submit">Kartı ekle</button><button class="btn ghost" id="f-cancel" type="button" hidden>Vazgeç</button></div>
+    </form>
+    <datalist id="dl-ders"></datalist><datalist id="dl-konu"></datalist>
+    <div class="list">
+      <input id="q" type="search" placeholder="Kartlarda ara" aria-label="Kartlarda ara">
+      <div class="legend"><span><i class="dot"></i>Yeni</span><span><i class="dot biliyorum"></i>Biliyorum</span><span><i class="dot bilmiyorum"></i>Bilmiyorum</span></div>
+      <div id="list"></div>
+    </div>
+  </div>
+  <div class="about"><span id="ver"></span><button class="btn" id="check">Güncellemeleri denetle</button></div>
+</aside>
+</main>
+<div class="toast" id="toast" role="status"><span id="toast-t"></span><button id="toast-b" hidden>Geri al</button></div>
+
+<script src="vendor/supabase.js"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
